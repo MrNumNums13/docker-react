@@ -1,0 +1,6 @@
+{
+	"host": "http://localhost:3000",
+	"dbURI": "mongodb+srv://harry:Harry-O09@mychatcatdb-sj0ku.mongodb.net/test?retryWrites=true&w=majority",
+	"sessionSecret": "catscanfly"
+
+}
