@@ -17,6 +17,6 @@ app.use(passport.session());
 app.use('/', chatCat.router);
 
 //This is the function that starts the webserver on the specified port
-app.listen(app.get('port'), () => {
+chatCat.ioServer(app).listen(app.get('port'), () => {
 	console.log('ChatCAT Running on Port: ', app.get('port'));
 })

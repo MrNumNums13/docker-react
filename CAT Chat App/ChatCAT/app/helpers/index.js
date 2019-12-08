@@ -1,6 +1,7 @@
 'use strict';
 const router = require('express').Router();
 const db = require('../db');
+const crypto = require('crypto');
 
 //Here we're just separating out the route handler so we could use it for something else later
 //Just making it more flexible by deatching things from one another.
@@ -69,9 +70,52 @@ let findById = id => {
 	});
 }
 
+
+// A middleware that checks to see if the user is authenticated & logged in
+let isAuthenticated = (req, res, next) => {
+	if(req.isAuthenticated()) {
+		next();
+	} else {
+		res.rediect('/');
+	}
+}
+
+
+// Find a chatroom by a given name
+let findRoomByName = (allrooms, room) => {
+	let findRoom = allrooms.findIndex((element, index, array) => {
+		if(element.room === room) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+	return findRoom > -1 ? true : false;
+}
+
+// A function that generates a unique roomID
+let randomHex = () => {
+	return crypto.randomBytes(24).toString('hex');
+}
+
+// Find a chatroom with a given ID
+let findRoomById = (allrooms, roomID) => {
+	return allrooms.find((element, index, array) => {
+		if(element.roomID === roomID) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+}
+
 module.exports = {
 	route,
 	findOne,
 	createNewUser,
-	findById
+	findById,
+	isAuthenticated,
+	findRoomByName,
+	findRoomById,
+	randomHex
 }
