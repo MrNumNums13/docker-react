@@ -27,6 +27,7 @@ module.exports = (io, app) => {
 			}
 		});
 	});
+	
 	io.of('/chatter').on('connection', socket => {
 		// Join a chatroom
 		socket.on('join', data => {

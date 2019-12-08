@@ -6,16 +6,19 @@
 	<link rel="stylesheet" href="/css/chatroomStyles.css">
 	<script src="/js/jquery-2.1.4.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://widget.cloudinary.com/global/all.js"></script>
 	<script>
-		'use strict':
+		'use strict';
 		$(() => {
 			let socket = io('<%= host %>' + '/chatter');
-			let roomID = io('<%= roomID %>');
-			let user = io('<%= user.fullName %>');
-			let userPic = io('<%= user.profilePic %>');
+			let roomID = '<%= roomID %>';
+			let user = '<%= user.fullName %>';
+			let userPic = '<%= user.profilePic %>';
 			let chatUsers = $('.chatUsers');
-		let chatInput = $("input[name='userInput']");
-			
+			let chatInput = $("input[name='userInput']");
+			let chatMessagesDiv = $('.chatMessages');
+			let filePicker = $('#uploadFile');
+
 			socket.on('connect', () => {
 				socket.emit('join', {
 					roomID,
@@ -25,10 +28,10 @@
 			});
 
 			let userList = user => {
-			return `<div class="userBlock">
-					<div class="userPic"><img src="${user.userPic}" alt="${user.user}"></div>
-					<div class="cuserName">${user.user}</div>
-				</div>`;
+				return `<div class="userBlock">
+						<div class="userPic"><img src="${user.userPic}" alt="${user.user}"></div>
+						<div class="cuserName">${user.user}</div>
+					</div>`;
 			}
 
 			socket.on('updateUsersList', data => {
@@ -42,13 +45,34 @@
 
 			let updateFeed = (userPic, message) => {
 				let template = `<div class="chatBlock">
-								<div class="userPic"><img src="${userPic}"></div>
-								<div class="chatMsg">${message}</div>
-							</div>`;
+									<div class="userPic"><img src="${userPic}"></div>
+									<div class="chatMsg">${message}</div>
+								</div>`;
 				$(template).hide().prependTo(chatMessagesDiv).slideDown(200);
-				}
+			}
 
+			chatInput.on('keyup', function(evt) {
+				evt.preventDefault();
+				let messageFld = $(this);
+				if(evt.which === 13 && messageFld.val() !== '') {
+					socket.emit('newMessage', {
+						roomID,
+						user,
+						userPic,
+						message: messageFld.val()
+					});
+					// Update the local feed
+					updateFeed(userPic, messageFld.val());
+					messageFld.val('');
+				}
 			});
+
+			socket.on('inMessage', data => {
+				let parsedData = JSON.parse(data);
+				updateFeed(parsedData.userPic, parsedData.message);
+			});
+
+		});
 	</script>
 </head>
 <body>
@@ -66,10 +90,7 @@
 			<div class="chatMessagesPanel">
 				<div class="chatMessages">
 				<!-- Loop this for chat messages -->
-				<div class="chatBlock">
-					<div class="userPic"><img src="<%= user.profilePic %>"></div>
-					<div class="chatMsg">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti perferendis eius aut nesciunt necessitatibus ad nulla, qui sequi, id nam. Possimus odit aut nisi veritatis amet distinctio id officiis ipsam!</div>
-				</div>					
+								
 				<!-- loop end -->
 				</div>
 				<div class="typePanel">
@@ -79,10 +100,7 @@
 			</div>
 			<div class="chatUsers">
 			<!-- Loop this for chat users -->
-				<div class="userBlock">
-					<div class="userPic"><img src="<%= user.profilePic %>" alt="<%= user.fullName %>"></div>
-					<div class="cuserName"><%= user.fullName %></div>
-				</div>
+
 			<!-- loop end -->
 			</div>
 		</div>
