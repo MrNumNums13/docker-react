@@ -1,6 +1,19 @@
 {
 	"host": "http://localhost:3000",
 	"dbURI": "mongodb+srv://harry:Harry-O09@mychatcatdb-sj0ku.mongodb.net/test?retryWrites=true&w=majority",
-	"sessionSecret": "catscanfly"
+	"sessionSecret": "catscanfly",
+	"fb": {
+		"clientID": "2626315584150032",
+		"clientSecret": "9aa58716f03d40e8c437afa3ef3d1211",
+		"callbackURL": "https://122faa43.ngrok.io/auth/facebook/callback",
+		"enableProof": true,
+		"profileFields": ["id", "displayName", "photos"]
+	},
+	"twitter": {
+		"consumerKey": "<twitter consumer key>",
+		"consumerSecret": "<twitter consumer secret key>",
+		"callbackURL": "//localhost:3000/auth/twitter/callback",
+		"profileFields": ["id", "displayName", "photos"]
+	}
 
 }

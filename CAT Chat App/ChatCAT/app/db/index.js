@@ -3,17 +3,29 @@ const config = require('../config');
 const connectionString =
   "mongodb+srv://harry:Harry-O09@mychatcatdb-sj0ku.mongodb.net/test?retryWrites=true&w=majority";
  
-const mongoose = require("mongoose");
+const Mongoose = require("mongoose");
  
-mongoose.connect(connectionString, {
+Mongoose.connect(connectionString, {
   useNewUrlParser: true
 });
  
-mongoose.connection.on("error", error => console.log(`MongoDB Error: ${error}`));
+Mongoose.connection.on("error", error => console.log(`MongoDB Error: ${error}`));
 
+
+// Create a Schema that defines the structure for storing user data
+const chatUser = new Mongoose.Schema({
+	profileId: String,
+	fullName: String,
+	profilePic: String
+});
+
+
+// Turn the schema into a usable model
+let userModel = Mongoose.model('chatUser', chatUser);
 
 module.exports = {
-	mongoose
+	Mongoose,
+	userModel
 }
 
 
