@@ -1,0 +1,25 @@
+{
+  "name": "cardsprinter",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --harmony-spreadcalls app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^18.4.0",
+    "@hapi/hoek": "^8.5.0",
+    "babel-core": "^6.26.3",
+    "dotenv": "1.2.0",
+    "good": "6.4.0",
+    "good-file": "5.1.0",
+    "handlebars": "^4.5.3",
+    "hapi": "9.3.0",
+    "inert": "3.0.1",
+    "socket.io": "^2.3.0",
+    "stomp-client": "0.8.0",
+    "vision": "3.0.0"
+  }
+}
